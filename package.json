@@ -1,0 +1,19 @@
+{
+  "name": "listenear-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fluffyanvil/listenear-server.git"
+  },
+  "author": "sergey.garnov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fluffyanvil/listenear-server/issues"
+  },
+  "homepage": "https://github.com/fluffyanvil/listenear-server#readme"
+}
