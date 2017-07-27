@@ -25,8 +25,31 @@ var currentUserTrackSchema = mongoose.Schema({
 
 var CurrentUserTrack = mongoose.model('CurrentUserTrack', currentUserTrackSchema);
 
+var userTrackHistoryRecord = mongoose.Schema({
+    date: Number,
+    artist: String,
+    track: String,
+    username: String,
+    uuid: String,
+    lat: Number,
+    lng: Number,
+});
+
+var UserTrackHistoryRecord = mongoose.model('UserTrackHistoryRecord', userTrackHistoryRecord);
+
+var AddNewUserTrackHistoryRecord = function(currentUserTrack){
+    UserTrackHistoryRecord.create({
+        date: currentUserTrack.date,
+        artist: currentUserTrack.artist,
+        track: currentUserTrack.track,
+        lat: currentUserTrack.lat,
+        lng: currentUserTrack.lng,
+        username: currentUserTrack.username,
+        uuid: currentUserTrack.uuid
+    })
+}
+
 module.exports = {
-    CurrentUserTrack: CurrentUserTrack,
     GetAllCurrentUserTracks: function(callback){
         var query = CurrentUserTrack
             .find({});
@@ -49,9 +72,26 @@ module.exports = {
             username: currentUserTrack.username,
             uuid: currentUserTrack.uuid
         }, {
-            upsert:true
-        }, function (err, item){
-            if (err) console.log(err);
+            upsert : true,
+            'new': true
+        },
+            function (error, result){
+            if (error) callback(null, result);
+            else{
+                AddNewUserTrackHistoryRecord(result);
+                callback(result, null);
+            }
+        });
+    },
+
+    GetAllUserTrackHistoryRecords: function(username, callback){
+        var query = UserTrackHistoryRecord
+            .find({'username' : username});
+        var promise = query.exec();
+        assert.ok(promise instanceof require('mpromise'));
+
+        promise.then(function (doc) {
+            callback(doc, null);
         });
     }
 }

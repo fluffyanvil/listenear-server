@@ -23,6 +23,25 @@ module.exports = function(app){
 
     app.post('/api/current/update', function (req, res) {
         var currentUserTrack = req.body;
-        mongo.UpdateCurrentUserTrack(currentUserTrack, res.json({"status" : "ok"}));
+        mongo.UpdateCurrentUserTrack(currentUserTrack, function(result, error){
+            if (error){
+                res.json({status: 'error'})
+            }
+            else{
+                res.json({status: 'ok', item: result})
+            }
+        });
+    });
+
+    app.get('/api/history/:username', function (req, res){
+        var username = req.params.username;
+        mongo.GetAllUserTrackHistoryRecords(username, function(result, error){
+            if (error){
+                res.status(500).send({ error: 'Something failed!' })
+            }
+            else{
+                res.json(result);
+            }
+        });
     });
 };

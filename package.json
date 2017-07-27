@@ -23,6 +23,7 @@
     "express": "^4.15.3",
     "moment": "^2.18.1",
     "mongoose": "^4.11.4",
-    "mongoose-assert": "^1.0.2"
+    "mongoose-assert": "^1.0.2",
+    "require.all": "^2.0.3"
   }
 }
