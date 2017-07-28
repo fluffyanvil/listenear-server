@@ -42,13 +42,27 @@ var currentUserTrackSchema = mongoose.Schema({
     battery: Number
 });
 
+var userTrackHistoryRecord = mongoose.Schema({
+    date: Number,
+    artist: String,
+    track: String,
+    username: String,
+    uuid: String,
+    battery: Number
+})
+
 var CurrentUserTrack = mongoose.model('CurrentUserTrack', currentUserTrackSchema);
+var UserTrackHistoryRecord = mongoose.model('UserTrackHistoryRecord', userTrackHistoryRecord);
 
-
-var UserTrackHistoryRecord = mongoose.model('UserTrackHistoryRecord', currentUserTrackSchema);
-
-var AddNewUserTrackHistoryRecord = function(currentUserTrack){
-    UserTrackHistoryRecord.create(currentUserTrack)
+var AddNewUserTrackHistoryRecord = function(item){
+    UserTrackHistoryRecord.create({
+        date: item.date,
+        artist: item.artist,
+        track: item.track,
+        username: item.username,
+        uuid: item.uuid,
+        battery: item.battery
+    })
 }
 
 module.exports = {
