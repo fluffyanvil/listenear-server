@@ -12,13 +12,23 @@ var db = mongoose.connection;
 db.once('open', function callback () {
     console.log("Connected to DB!");
     var curDate = moment().unix();
+    var yesterdayDate = moment().subtract(24, 'hour').unix();
+
     CurrentUserTrack.find({
-        '$where': curDate + ' - this.date >= 3600'
+        '$where': curDate + '- this.date >= 3600'
     })
-        .remove()
-        .exec(function(err, doc){
-            if (err) console.log(err);
-        });
+    .remove()
+    .exec(function(err, doc){
+        if (err) console.log(err);
+    });
+
+    UserTrackHistoryRecord.find({
+        '$where': 'this.date <= ' + yesterdayDate
+    })
+    .remove()
+    .exec(function(err, doc){
+        if (err) console.log(err);
+    });
 });
 
 var currentUserTrackSchema = mongoose.Schema({
@@ -28,33 +38,17 @@ var currentUserTrackSchema = mongoose.Schema({
     lat: Number,
     lng: Number,
     username: String,
-    uuid: String
+    uuid: String,
+    battery: Number
 });
 
 var CurrentUserTrack = mongoose.model('CurrentUserTrack', currentUserTrackSchema);
 
-var userTrackHistoryRecord = mongoose.Schema({
-    date: Number,
-    artist: String,
-    track: String,
-    username: String,
-    uuid: String,
-    lat: Number,
-    lng: Number,
-});
 
-var UserTrackHistoryRecord = mongoose.model('UserTrackHistoryRecord', userTrackHistoryRecord);
+var UserTrackHistoryRecord = mongoose.model('UserTrackHistoryRecord', currentUserTrackSchema);
 
 var AddNewUserTrackHistoryRecord = function(currentUserTrack){
-    UserTrackHistoryRecord.create({
-        date: currentUserTrack.date,
-        artist: currentUserTrack.artist,
-        track: currentUserTrack.track,
-        lat: currentUserTrack.lat,
-        lng: currentUserTrack.lng,
-        username: currentUserTrack.username,
-        uuid: currentUserTrack.uuid
-    })
+    UserTrackHistoryRecord.create(currentUserTrack)
 }
 
 module.exports = {
@@ -78,7 +72,8 @@ module.exports = {
             lat: currentUserTrack.lat,
             lng: currentUserTrack.lng,
             username: currentUserTrack.username,
-            uuid: currentUserTrack.uuid
+            uuid: currentUserTrack.uuid,
+            battery: currentUserTrack.battery
         }, {
             upsert : true,
             'new': true
