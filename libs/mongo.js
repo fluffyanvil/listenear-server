@@ -103,7 +103,7 @@ module.exports = {
 
     GetAllUserTrackHistoryRecords: function(username, callback){
         var query = UserTrackHistoryRecord
-            .find({'username' : username});
+            .find({'username' : username}).sort({ date : -1 });
         var promise = query.exec();
         assert.ok(promise instanceof require('mpromise'));
 
