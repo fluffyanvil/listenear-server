@@ -11,6 +11,14 @@ mongoose.connect(process.env.MONGO_CONNECTION, {
 var db = mongoose.connection;
 db.once('open', function callback () {
     console.log("Connected to DB!");
+    var curDate = moment().unix();
+    CurrentUserTrack.find({
+        '$where': curDate + ' - this.date >= 3600'
+    })
+        .remove()
+        .exec(function(err, doc){
+            if (err) console.log(err);
+        });
 });
 
 var currentUserTrackSchema = mongoose.Schema({
