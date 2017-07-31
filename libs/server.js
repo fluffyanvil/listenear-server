@@ -5,6 +5,16 @@ var express = require('express');
 var bodyParser = require('body-parser')
 var cors = require('cors')
 var app = express();
+var mongoose     = require("mongoose");
+
+
+mongoose.connect(process.env.MONGO_CONNECTION, {
+    useMongoClient: true
+});
+var db = mongoose.connection;
+db.once('open', function callback () {
+    console.log("Connected to DB!");
+});
 
 app.use(express.static('public'));
 app.use(cors());
