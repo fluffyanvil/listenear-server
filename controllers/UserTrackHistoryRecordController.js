@@ -1,8 +1,9 @@
 /**
  * Created by admin on 7/31/2017.
  */
-var assert = require('assert');
+var assert      = require('assert');
 var moment      = require('moment');
+var config      = require('../config');
 var UserTrackHistoryRecord = require('../models/UserTrackHistoryRecord').UserTrackHistoryRecord;
 module.exports = {
     AddNewUserTrackHistoryRecord : function(item){
@@ -26,7 +27,7 @@ module.exports = {
         });
     },
     RemoveOldRecords : function () {
-        var yesterdayDate = moment().subtract(24, 'hour').unix();
+        var yesterdayDate = moment().subtract(config.userTrackHistoryTimeoutHours, 'hour').unix();
         UserTrackHistoryRecord
             .find({
                 '$where': 'this.date <= ' + yesterdayDate

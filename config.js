@@ -3,3 +3,7 @@
  */
 
 config = {};
+
+config.currentUserTrackTimeoutSeconds = 3600;
+config.userTrackHistoryTimeoutHours = 6;
+

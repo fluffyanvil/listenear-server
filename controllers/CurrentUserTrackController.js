@@ -2,6 +2,7 @@
  * Created by admin on 7/31/2017.
  */
 var assert = require('assert');
+var config = require('../config');
 var moment      = require('moment');
 var CurrentUserTrack = require('../models/CurrentUserTrack').CurrentUserTrack;
 var userTrackHistoryController = require('./UserTrackHistoryRecordController');
@@ -21,7 +22,7 @@ module.exports = {
     RemoveOldRecords: function () {
         var curDate = moment().unix();
         CurrentUserTrack.find({
-            '$where': curDate + '- this.date >= 3600'
+            '$where': curDate + '- this.date >= ' + config.currentUserTrackTimeoutSeconds
         })
             .remove()
             .exec(function(err, doc){
