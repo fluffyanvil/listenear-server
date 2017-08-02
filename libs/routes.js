@@ -22,6 +22,21 @@ module.exports = function(app){
             }
         });
     });
+
+    app.get('/api/near/', function (req, res) {
+        var lat = parseFloat(req.query.lat);
+        var lng = parseFloat(req.query.lng);
+        var radius = parseInt(req.query.radius);
+        currentUserTrackController.GetNearCurrentUserTrack(lat, lng, radius, function(result, error){
+            if (error){
+                res.status(500).send({ error: 'Something failed!' })
+            }
+            else{
+                res.json(result);
+            }
+        });
+    });
+
     app.post('/api/current/update', function (req, res) {
         var currentUserTrack = req.body;
         currentUserTrackController.UpdateCurrentUserTrack(currentUserTrack, function(result, error){

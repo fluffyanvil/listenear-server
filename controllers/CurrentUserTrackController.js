@@ -8,6 +8,30 @@ var CurrentUserTrack = require('../models/CurrentUserTrack').CurrentUserTrack;
 var userTrackHistoryController = require('./UserTrackHistoryRecordController');
 
 module.exports = {
+    GetNearCurrentUserTrack : function(lat, lng, radius, callback){
+        CurrentUserTrack
+            .find({
+                geometry: {
+                    $near : {
+                            $geometry : {
+                                type : 'Point',
+                                coordinates : [lat, lng]
+                            },
+                            $maxDistance : radius
+                        }
+                }
+            })
+            .exec(function(err, doc){
+                if (err) {
+                    console.log(err);
+                    callback(null, err);
+                }
+                else {
+                    callback(doc, null);
+                }
+            });
+    },
+
     GetAllCurrentUserTracks: function(callback){
         var query = CurrentUserTrack
             .find({});
@@ -31,6 +55,7 @@ module.exports = {
     },
 
     UpdateCurrentUserTrack: function(currentUserTrack, callback){
+        console.log(currentUserTrack);
         CurrentUserTrack
             .findOneAndUpdate({
                 username: currentUserTrack.username
@@ -38,7 +63,7 @@ module.exports = {
                 date: moment().unix(),
                 artist: currentUserTrack.artist,
                 track: currentUserTrack.track,
-                location: currentUserTrack.location,
+                geometry: currentUserTrack.geometry,
                 username: currentUserTrack.username,
                 uuid: currentUserTrack.uuid,
                 battery: currentUserTrack.battery
@@ -53,5 +78,6 @@ module.exports = {
                     callback(result, null);
                 }
             });
+
     },
 }

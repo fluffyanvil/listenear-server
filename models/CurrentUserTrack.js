@@ -6,9 +6,8 @@ var currentUserTrackSchema = mongoose.Schema({
     date: Number,
     artist: String,
     track: String,
-    location: {
-        lat: Number,
-        lng: Number,
+    geometry: {
+        coordinates: { type: [Number], index: '2dsphere'}
     },
     username: String,
     uuid: String,
