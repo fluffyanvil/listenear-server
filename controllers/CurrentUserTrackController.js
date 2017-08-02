@@ -38,8 +38,7 @@ module.exports = {
                 date: moment().unix(),
                 artist: currentUserTrack.artist,
                 track: currentUserTrack.track,
-                lat: currentUserTrack.lat,
-                lng: currentUserTrack.lng,
+                location: currentUserTrack.location,
                 username: currentUserTrack.username,
                 uuid: currentUserTrack.uuid,
                 battery: currentUserTrack.battery

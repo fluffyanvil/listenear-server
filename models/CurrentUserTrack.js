@@ -6,8 +6,10 @@ var currentUserTrackSchema = mongoose.Schema({
     date: Number,
     artist: String,
     track: String,
-    lat: Number,
-    lng: Number,
+    location: {
+        lat: Number,
+        lng: Number,
+    },
     username: String,
     uuid: String,
     battery: Number
