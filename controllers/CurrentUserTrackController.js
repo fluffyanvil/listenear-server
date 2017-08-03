@@ -28,17 +28,7 @@ module.exports = function(logger){
                             spherical : true
                         }
                     }
-                ])
-            //     .find({
-            //         point:
-            //             { $near :
-            //                 {
-            //                     $geometry: { type: "Point",  coordinates: [ lng, lat] },
-            //                     $minDistance: 0,
-            //                     $maxDistance: radius
-            //                 }
-            //             }
-            //     })
+             ])
             .exec(function (err, doc) {
                 if (err){
                     logger.error(err);

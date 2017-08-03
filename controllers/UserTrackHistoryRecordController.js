@@ -9,14 +9,16 @@ module.exports = function(logger){
     module = {};
 
     module.AddNewUserTrackHistoryRecord = function(item){
-
-        UserTrackHistoryRecord.create({
+        var record = new UserTrackHistoryRecord({
             date: item.date,
             artist: item.artist,
             track: item.track,
             username: item.username,
             uuid: item.uuid,
             battery: item.battery
+        });
+        record.save(function (err) {
+            if (err) logger(err);
         });
     };
 
