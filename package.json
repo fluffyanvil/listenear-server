@@ -25,6 +25,7 @@
     "moment": "^2.18.1",
     "mongoose": "^4.11.4",
     "mongoose-assert": "^1.0.2",
+    "mongoose-geojson-schema": "^2.1.2",
     "require.all": "^2.0.3"
   }
 }

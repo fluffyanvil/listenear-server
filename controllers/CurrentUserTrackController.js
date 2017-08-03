@@ -13,6 +13,29 @@ module.exports = function(logger){
 
     module = {};
 
+    module.GetNearCurrentUserTracks = function (lng, lat, radius, callback) {
+        CurrentUserTrack
+            .find({
+                point:
+                    { $near :
+                        {
+                            $geometry: { type: "Point",  coordinates: [ lat, lng ] },
+                            $minDistance: 100,
+                            $maxDistance: radius
+                        }
+                    }
+            })
+        .exec(function (err, doc) {
+            if (err){
+                logger.error(err);
+                callback(null, err);
+            }
+            else{
+                callback(doc, null);
+            }
+        });
+    }
+
     module.GetAllCurrentUserTracks = function(callback){
         var query = CurrentUserTrack
             .find({});
@@ -44,7 +67,7 @@ module.exports = function(logger){
                 date: moment().unix(),
                 artist: currentUserTrack.artist,
                 track: currentUserTrack.track,
-                location: currentUserTrack.location,
+                    point: currentUserTrack.point,
                 username: currentUserTrack.username,
                 uuid: currentUserTrack.uuid,
                 battery: currentUserTrack.battery

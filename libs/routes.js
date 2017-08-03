@@ -27,21 +27,21 @@ module.exports = function(app, logger){
         });
     });
 
-    // app.get('/api/near/', function (req, res) {
-    //     logger.info('get /api/near/');
-    //     var lat = parseFloat(req.query.lat);
-    //     var lng = parseFloat(req.query.lng);
-    //     var radius = parseInt(req.query.radius);
-    //     currentUserTrackController.GetNearCurrentUserTrack(lat, lng, radius, function(result, error){
-    //         if (error){
-    //             logger.error(error);
-    //             res.status(500).send({ error: 'Something failed!' })
-    //         }
-    //         else{
-    //             res.json(result);
-    //         }
-    //     });
-    // });
+    app.get('/api/near/', function (req, res) {
+        logger.info('get /api/near/', req.query);
+        var lat = parseFloat(req.query.lat);
+        var lng = parseFloat(req.query.lng);
+        var radius = parseInt(req.query.radius);
+        currentUserTrackController.GetNearCurrentUserTracks(lng, lat, radius, function(result, error){
+            if (error){
+                logger.error(error);
+                res.status(500).send({ error: 'Something failed!' })
+            }
+            else{
+                res.json(result);
+            }
+        });
+    });
 
     app.post('/api/current/update', function (req, res) {
         var currentUserTrack = req.body;
