@@ -67,7 +67,10 @@ module.exports = function(logger){
                 date: moment().unix(),
                 artist: currentUserTrack.artist,
                 track: currentUserTrack.track,
-                    point: currentUserTrack.point,
+                point: {
+                    type: "Point",
+                    coordinates: currentUserTrack.point.coordinates
+                },
                 username: currentUserTrack.username,
                 uuid: currentUserTrack.uuid,
                 battery: currentUserTrack.battery
