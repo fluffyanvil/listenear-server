@@ -15,26 +15,39 @@ module.exports = function(logger){
 
     module.GetNearCurrentUserTracks = function (lng, lat, radius, callback) {
         CurrentUserTrack
-        .aggregate([{$geoNear:{near:[lng,lat],distanceField:"distance",maxDistance:radius,spherical:true}}])
-            // .find({
-            //     point:
-            //         { $near :
-            //             {
-            //                 $geometry: { type: "Point",  coordinates: [ lng, lat] },
-            //                 $minDistance: 0,
-            //                 $maxDistance: radius
+            .aggregate([
+                    {
+                        $geoNear : {
+                            near : {
+                                type: "Point",
+                                coordinates: [lng, lat]
+                            },
+                            distanceField : "distance",
+                            minDistance : 0,
+                            maxDistance : radius,
+                            spherical : true
+                        }
+                    }
+                ])
+            //     .find({
+            //         point:
+            //             { $near :
+            //                 {
+            //                     $geometry: { type: "Point",  coordinates: [ lng, lat] },
+            //                     $minDistance: 0,
+            //                     $maxDistance: radius
+            //                 }
             //             }
-            //         }
-            // })
-        .exec(function (err, doc) {
-            if (err){
-                logger.error(err);
-                callback(null, err);
-            }
-            else{
-                callback(doc, null);
-            }
-        });
+            //     })
+            .exec(function (err, doc) {
+                if (err){
+                    logger.error(err);
+                    callback(null, err);
+                }
+                else{
+                    callback(doc, null);
+                }
+            });
     }
 
     module.GetAllCurrentUserTracks = function(callback){
