@@ -21,6 +21,7 @@
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
     "express": "^4.15.3",
+    "log4js-node-mongodb": "^2.2.1",
     "moment": "^2.18.1",
     "mongoose": "^4.11.4",
     "mongoose-assert": "^1.0.2",

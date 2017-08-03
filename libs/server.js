@@ -6,6 +6,8 @@ var bodyParser = require('body-parser')
 var cors = require('cors')
 var app = express();
 var mongoose     = require("mongoose");
+var logger = require('./log4js').Logger
+
 
 
 mongoose.connect(process.env.MONGO_CONNECTION, {
@@ -26,10 +28,12 @@ app.use(function(req, res, next) {
     next();
 });
 
-require('./routes')(app);
+require('./routes')(app, logger);
 
 var server = app.listen(process.env.PORT, function () {
     var host = server.address().address;
     var port = server.address().port;
     console.log('Web server started at http://%s:%s', host, port);
+    logger.info('Web server started at http://%s:%s', host, port);
 });
+

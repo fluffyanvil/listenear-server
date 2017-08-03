@@ -5,34 +5,15 @@ var assert = require('assert');
 var config = require('../config');
 var moment      = require('moment');
 var CurrentUserTrack = require('../models/CurrentUserTrack').CurrentUserTrack;
-var userTrackHistoryController = require('./UserTrackHistoryRecordController');
 
-module.exports = {
-    GetNearCurrentUserTrack : function(lat, lng, radius, callback){
-        CurrentUserTrack
-            .find({
-                geometry: {
-                    $near : {
-                            $geometry : {
-                                type : 'Point',
-                                coordinates : [lat, lng]
-                            },
-                            $maxDistance : radius
-                        }
-                }
-            })
-            .exec(function(err, doc){
-                if (err) {
-                    console.log(err);
-                    callback(null, err);
-                }
-                else {
-                    callback(doc, null);
-                }
-            });
-    },
 
-    GetAllCurrentUserTracks: function(callback){
+module.exports = function(logger){
+
+    var userTrackHistoryController = require('./UserTrackHistoryRecordController')(logger);
+
+    module = {};
+
+    module.GetAllCurrentUserTracks = function(callback){
         var query = CurrentUserTrack
             .find({});
         var promise = query.exec();
@@ -41,9 +22,9 @@ module.exports = {
         promise.then(function (doc) {
             callback(doc, null);
         });
-    },
+    };
 
-    RemoveOldRecords: function () {
+    module.RemoveOldRecords = function () {
         var curDate = moment().unix();
         CurrentUserTrack.find({
             '$where': curDate + '- this.date >= ' + config.currentUserTrackTimeoutSeconds
@@ -52,9 +33,9 @@ module.exports = {
             .exec(function(err, doc){
                 if (err) console.log(err);
             });
-    },
+    };
 
-    UpdateCurrentUserTrack: function(currentUserTrack, callback){
+    module.UpdateCurrentUserTrack = function(currentUserTrack, callback){
         console.log(currentUserTrack);
         CurrentUserTrack
             .findOneAndUpdate({
@@ -63,7 +44,7 @@ module.exports = {
                 date: moment().unix(),
                 artist: currentUserTrack.artist,
                 track: currentUserTrack.track,
-                geometry: currentUserTrack.geometry,
+                location: currentUserTrack.location,
                 username: currentUserTrack.username,
                 uuid: currentUserTrack.uuid,
                 battery: currentUserTrack.battery
@@ -79,5 +60,7 @@ module.exports = {
                 }
             });
 
-    },
+    };
+
+    return module;
 }

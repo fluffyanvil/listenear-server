@@ -5,8 +5,11 @@ var assert      = require('assert');
 var moment      = require('moment');
 var config      = require('../config');
 var UserTrackHistoryRecord = require('../models/UserTrackHistoryRecord').UserTrackHistoryRecord;
-module.exports = {
-    AddNewUserTrackHistoryRecord : function(item){
+module.exports = function(logger){
+    module = {};
+
+    module.AddNewUserTrackHistoryRecord = function(item){
+
         UserTrackHistoryRecord.create({
             date: item.date,
             artist: item.artist,
@@ -15,8 +18,11 @@ module.exports = {
             uuid: item.uuid,
             battery: item.battery
         });
-    },
-    GetAllUserTrackHistoryRecords: function(username, callback){
+    };
+
+
+    module.GetAllUserTrackHistoryRecords = function(username, callback){
+        logger.info('GetAllUserTrackHistoryRecords for', username);
         var query = UserTrackHistoryRecord
             .find({'username' : username}).sort({ date : -1 });
         var promise = query.exec();
@@ -25,8 +31,8 @@ module.exports = {
         promise.then(function (doc) {
             callback(doc, null);
         });
-    },
-    RemoveOldRecords : function () {
+    };
+    module.RemoveOldRecords = function () {
         var yesterdayDate = moment().subtract(config.userTrackHistoryTimeoutHours, 'hour').unix();
         UserTrackHistoryRecord
             .find({
@@ -36,5 +42,7 @@ module.exports = {
             .exec(function(err, doc){
                 if (err) console.log(err);
             });
-    }
+    };
+
+    return module;
 }
