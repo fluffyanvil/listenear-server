@@ -19,8 +19,8 @@ module.exports = function(logger){
                 point:
                     { $near :
                         {
-                            $geometry: { type: "Point",  coordinates: [ lat, lng ] },
-                            $minDistance: 100,
+                            $geometry: { type: "Point",  coordinates: [ lng, lat] },
+                            $minDistance: 0,
                             $maxDistance: radius
                         }
                     }
