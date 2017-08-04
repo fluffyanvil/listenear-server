@@ -29,9 +29,10 @@ module.exports = function(logger){
                     }
                 },
                 {
-                    $sort : {
-                        'distance' : 1
+                    $sort: {
+                        'distance': 1
                     }
+                }
                 ])
             //     .find({
             //         point:
