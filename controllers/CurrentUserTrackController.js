@@ -32,7 +32,6 @@ module.exports = function(logger){
                     $sort : {
                         'distance' : 1
                     }
-                }
                 ])
             //     .find({
             //         point:
