@@ -3,7 +3,9 @@
  */
 var packageInfo = require('./../package.json');
 
-
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
 
 module.exports = function(app, logger){
     var currentUserTrackController = require('../controllers/CurrentUserTrackController')(logger);
@@ -55,6 +57,18 @@ module.exports = function(app, logger){
             }
         });
     });
+
+    app.get('/api/random/generate', function(req, res){
+        var count = getRandomInt(10, 100);
+        var radius = getRandomInt(1, 5000);
+        var lat = 55.09859635940893;
+        var lng = 36.6129714863196;
+        currentUserTrackController.GenerateRandomCurrentUserTracks(count, lng, lat, radius, function () {
+
+        });
+        res.json({status: 'ok'})
+    });
+
     app.get('/api/history/:username', function (req, res){
         logger.info('get /api/history/ for ', req.params.username);
         var username = req.params.username;
