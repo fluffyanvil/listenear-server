@@ -60,7 +60,7 @@ module.exports = function(app, logger){
 
     app.get('/api/random/generate', function(req, res){
         var count = getRandomInt(10, 100);
-        var radius = getRandomInt(1, 5000);
+        var radius = getRandomInt(1, 500);
         var lat = 55.09859635940893;
         var lng = 36.6129714863196;
         currentUserTrackController.GenerateRandomCurrentUserTracks(count, lng, lat, radius, function () {
