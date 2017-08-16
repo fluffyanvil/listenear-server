@@ -38,7 +38,7 @@ module.exports = function(logger){
 
         var center = {
             latitude: lat,
-                longitude: lng
+            longitude: lng
         };
 
         for (var i = 0; i < count; i++){
@@ -53,7 +53,7 @@ module.exports = function(logger){
                 },
                 username: 'user#' + i,
                 uuid: '048D86C-33D1-477F-90D3-B34BB1507D19',
-                battery: i * 10
+                battery: parseFloat(Math.random().toFixed(2))
             };
             CurrentUserTrack
                 .findOneAndUpdate({
