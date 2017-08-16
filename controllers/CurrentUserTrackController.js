@@ -83,19 +83,34 @@ module.exports = function(logger){
     module.GetNearCurrentUserTracks = function (lng, lat, radius, callback) {
         CurrentUserTrack
             .aggregate([
-                    {
-                        $geoNear : {
-                            near : {
-                                type: "Point",
-                                coordinates: [lng, lat]
-                            },
-                            distanceField : "distance",
-                            minDistance : 0,
-                            maxDistance : radius,
-                            spherical : true
-                        }
+                {
+                    $geoNear : {
+                        near : {
+                            type: "Point",
+                            coordinates: [lng, lat]
+                        },
+                        distanceField : "distance",
+                        minDistance : 0,
+                        maxDistance : radius,
+                        spherical : true
                     }
-             ])
+                },
+                {
+                    $sort: {
+                        'distance': 1
+                    }
+                }
+                ])
+            //     .find({
+            //         point:
+            //             { $near :
+            //                 {
+            //                     $geometry: { type: "Point",  coordinates: [ lng, lat] },
+            //                     $minDistance: 0,
+            //                     $maxDistance: radius
+            //                 }
+            //             }
+            //     })
             .exec(function (err, doc) {
                 if (err){
                     logger.error(err);
